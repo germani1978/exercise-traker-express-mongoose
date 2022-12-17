@@ -69,6 +69,7 @@ app.post('/api/users', async (req, res) => {
 
 
 // POST exercises
+// /api/users/:_id/exercises
 app.post('/api/users/:_id/exercises', (req, res) => {
   let { date } = req.body;
   const { description, duration } = req.body;
@@ -82,15 +83,16 @@ app.post('/api/users/:_id/exercises', (req, res) => {
       Exercise.create({
         userid: _id,
         description,
-        duration,
+        duration: parseInt(duration),
         date,
       })
-        .then((elem) => {
+        .then(( grab) => {
           res.send({
-            _id,
+            username: elem.username,
             description,
-            duration,
-            date: date.toDateString()
+            duration: grab.duration,
+            date: date.toDateString(),
+            _id
           });
         })
         .catch((err) => {
@@ -105,6 +107,9 @@ app.post('/api/users/:_id/exercises', (req, res) => {
 
 
 })
+
+
+
 
 // GET logs
 app.get('/api/users/:_id/logs', async (req, res) => {
